@@ -9,9 +9,9 @@ datasource db {
 
 model scores {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  score Int
+  winner String
   final_board String
   created_at DateTime @default(now()) @map("createdAt") @db.Date
 
-  @@index([score])
+  @@index([winner])
 }

@@ -4,21 +4,21 @@ import { NextRequest } from 'next/server';
 export async function POST(req: NextRequest) {
   try {
     const scores = await prisma.scores.groupBy({
-      by: ['score'],
-      _sum: {
-        score: true,
+      by: ['winner'],
+      _count: {
+        winner: true,
       },
     });
 
     const scoreMap = scores.reduce(
-      (acc, { score, _sum: { score: scoreCount } }) => {
-        acc[score] = scoreCount ?? 0;
+      (acc, { winner, _count: { winner: scoreCount } }) => {
+        acc[winner] = scoreCount ?? 0;
         return acc;
       },
       {} as Record<string, number>
     );
 
-    return new Response(JSON.stringify({ scores }), { status: 200 });
+    return new Response(JSON.stringify({ scores: scoreMap }), { status: 200 });
   } catch (error) {
     console.error(error);
 

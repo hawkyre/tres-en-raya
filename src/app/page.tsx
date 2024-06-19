@@ -1,3 +1,5 @@
+'use client';
+
 import { Board } from '@/board/components/Board';
 import { BoardContextProvider } from '@/board/context/BoardContext';
 
