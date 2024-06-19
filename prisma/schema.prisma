@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model scores {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  score Int
+  final_board String
+  created_at DateTime @default(now()) @map("createdAt") @db.Date
+
+  @@index([score])
+}
