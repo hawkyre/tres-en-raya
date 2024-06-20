@@ -31,7 +31,7 @@ export const BoardWinningLine: React.FC<BoardWinningLineProps> = ({
     const y2 = lineEndPercentY * (sideLength ?? 0);
 
     const color =
-      winner === 'O' ? 'rgba(239, 68, 68, 0.5)' : 'rgba(0, 0, 0, 0.5)';
+      winner === 'O' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
     const ctx = canvas.getContext('2d')!;
 
@@ -40,7 +40,7 @@ export const BoardWinningLine: React.FC<BoardWinningLineProps> = ({
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
-    ctx.lineWidth = side / 166;
+    ctx.lineWidth = side / 20;
     ctx.strokeStyle = color;
     ctx.lineCap = 'round';
     ctx.stroke();
