@@ -2,7 +2,7 @@
 
 import { getBoardResult } from '@/api/gameAI';
 import { revalidatePath } from 'next/cache';
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useMemo, useState } from 'react';
 
 // Define the shape of the context's state
 interface BoardContextState {
@@ -10,6 +10,7 @@ interface BoardContextState {
   onMove: (index: number) => void;
   gameState: string;
   restartGame: () => void;
+  whoseTurn: 'player' | 'ai';
 }
 
 // Create the context with a default value
@@ -18,6 +19,7 @@ const BoardContext = createContext<BoardContextState>({
   onMove: () => {},
   gameState: 'playing',
   restartGame: () => {},
+  whoseTurn: 'player',
 });
 
 // Create a provider component
@@ -49,10 +51,11 @@ export const BoardContextProvider: React.FC<BoardContextProviderProps> = ({
       setGameState(gameRes);
     }
 
-    fetch(`/api/ai/move?board=${newBoard}`, {
-      method: 'GET',
+    fetch(`/api/ai/move`, {
+      method: 'POST',
+      body: JSON.stringify({ board: newBoard }),
     }).then(async (res) => {
-      if (res.status === 200) {
+      if (res.status === 201) {
         const { nextBoard, result } = await res.json();
         setGameState(result);
         setBoard(nextBoard);
@@ -65,6 +68,14 @@ export const BoardContextProvider: React.FC<BoardContextProviderProps> = ({
     setGameState('playing');
   };
 
+  const whoseTurn = useMemo(
+    () =>
+      Array.from(board).filter((char) => char !== '_').length % 2 === 1
+        ? 'ai'
+        : 'player',
+    [board]
+  );
+
   return (
     <BoardContext.Provider
       value={{
@@ -72,6 +83,7 @@ export const BoardContextProvider: React.FC<BoardContextProviderProps> = ({
         gameState,
         onMove,
         restartGame,
+        whoseTurn,
       }}
     >
       {children}

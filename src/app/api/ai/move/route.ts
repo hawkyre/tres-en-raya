@@ -3,10 +3,9 @@ import { createScore } from '@/api/scores';
 import prisma from '@/prisma/prisma';
 import { NextRequest } from 'next/server';
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    console.log(req.nextUrl.searchParams.get('board'));
-    const board = req.nextUrl.searchParams.get('board');
+    const { board } = await req.json();
 
     if (!board || typeof board !== 'string') {
       return new Response('Invalid board', { status: 400 });
@@ -42,10 +41,10 @@ export async function GET(req: NextRequest) {
     }
 
     return new Response(JSON.stringify({ nextBoard, result: resultPost }), {
-      status: 200,
+      status: 201,
     });
   } catch (error) {
     console.log(error);
-    return new Response('Error', { status: 500 });
+    return new Response('Error', { status: 400 });
   }
 }

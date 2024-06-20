@@ -1,5 +1,4 @@
 import prisma from '@/prisma/prisma';
-import { revalidatePath } from 'next/cache';
 
 export const getScores = async () => {
   const scores = await prisma.scores.groupBy({
@@ -11,7 +10,7 @@ export const getScores = async () => {
 
   const scoreMap = scores.reduce(
     (acc, { winner, _count: { winner: scoreCount } }) => {
-      acc[winner] = scoreCount ?? 0;
+      acc[winner] = scoreCount;
       return acc;
     },
     {} as Record<string, number>

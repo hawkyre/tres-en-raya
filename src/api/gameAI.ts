@@ -13,8 +13,22 @@ const validateBoard = (board: string) => {
 // - Negative diagonal (only one case)
 // - Vertical (always 2 cells (any) + the comma in between Xs)
 // - Positive diagonal (only one case)
-const player1WinsRegexes = [/,XXX,/, /X,.X.,X/, /X...X...X/, /X..,.X.,..X/];
-const player2WinsRegexes = [/,OOO,/, /O,.O.,O/, /O...O...O/, /O..,.O.,..O/];
+const player1WinsRegexes = [
+  /^XXX,/,
+  /,XXX$/,
+  /,XXX,/,
+  /X,.X.,X/,
+  /X...X...X/,
+  /X..,.X.,..X/,
+];
+const player2WinsRegexes = [
+  /^OOO,/,
+  /,OOO$/,
+  /,OOO,/,
+  /O,.O.,O/,
+  /O...O...O/,
+  /O..,.O.,..O/,
+];
 
 const addSeparatorsToBoard = (board: string) => {
   return board.slice(0, 3) + ',' + board.slice(3, 6) + ',' + board.slice(6, 9);
@@ -32,8 +46,6 @@ const getBoardResult = (board: string) => {
   if (player1WinsRegexes.some((regex) => regex.test(board))) {
     return 'player1';
   }
-
-  console.log(board, /O,.O.,O/.exec(board));
 
   if (player2WinsRegexes.some((regex) => regex.test(board))) {
     return 'player2';
@@ -64,7 +76,6 @@ const getNextBoardMove = (board: string) => {
   const regexH1Index = /XX/g;
 
   while ((regexRes = regexH1Index.exec(board)) !== null) {
-    console.log('matched on', 'regexIndex = /XX/', regexRes.index);
     const regexIndex = regexRes.index;
     const nextMoveIndex =
       regexIndex % 4 === 0 ? regexIndex + 2 : regexIndex - 1;
@@ -78,7 +89,6 @@ const getNextBoardMove = (board: string) => {
   const regexH2Index = /X[_O]X/g;
 
   while ((regexRes = regexH2Index.exec(board)) !== null) {
-    console.log('matched on', 'regexIndex = /X[_O]X/', regexRes.index);
     const regexIndex = regexRes.index;
     const nextMoveIndex = regexIndex + 1;
 
@@ -91,7 +101,6 @@ const getNextBoardMove = (board: string) => {
   const regexV1Index = /X...X/g;
 
   while ((regexRes = regexV1Index.exec(board)) !== null) {
-    console.log('matched on', 'regexIndex = /X...X/', regexRes.index);
     const regexIndex = regexRes.index;
     const nextMoveIndex = regexIndex / 4 < 1 ? regexIndex + 8 : regexIndex - 4;
 
@@ -104,7 +113,6 @@ const getNextBoardMove = (board: string) => {
   const regexV2Index = /X.......X/g;
 
   while ((regexRes = regexV2Index.exec(board)) !== null) {
-    console.log('matched on', 'regexIndex = /X.......X/', regexRes.index);
     const regexIndex = regexRes.index;
     const nextMoveIndex = regexIndex + 4;
 
@@ -115,7 +123,6 @@ const getNextBoardMove = (board: string) => {
 
   // We don't check for diagonals to not make it perfect
   // If none of the above, choose random index to move to
-  console.log('matched on', 'nextMoveIndex === -1');
   const randomPossiblePositions = board
     .split('')
     .flatMap((play, i) => (play === '_' ? [i] : []));

@@ -4,15 +4,7 @@ import { useBoardContext } from '../context/BoardContext';
 interface BoardStateProps {}
 
 export const BoardState: React.FC<BoardStateProps> = () => {
-  const { gameState, boardState } = useBoardContext();
-
-  const whoseTurn = useMemo(
-    () =>
-      Array.from(boardState).filter((char) => char !== '_').length % 2 === 1
-        ? 'ai'
-        : 'player',
-    [boardState]
-  );
+  const { gameState, boardState, whoseTurn } = useBoardContext();
 
   const gameStateText = useMemo(() => {
     if (gameState === 'playing') {

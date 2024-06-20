@@ -5,7 +5,7 @@ import { BoardContextProvider } from '@/board/context/BoardContext';
 
 export default function Home() {
   return (
-    <main className='flex h-screen w-screen flex-col items-center justify-center'>
+    <main className='flex min-h-screen w-screen flex-col items-center px-8 md:p-0 py-8'>
       <BoardContextProvider>
         <Board />
       </BoardContextProvider>
