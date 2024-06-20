@@ -141,6 +141,7 @@ const generateNewBoard = (board: string, indexToPlay: number) => {
 
   // Cool trick to print the board in console for debugging
   console.table(newBoard.split(','));
+
   return newBoard.replaceAll(',', '');
 };
 

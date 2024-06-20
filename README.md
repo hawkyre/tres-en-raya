@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tres en raya
+
+A simple tic-tac-toe game built with Next.js, Typescript, TailwindCSS, MongoDB and Prisma.
 
 ## Getting Started
 
-First, run the development server:
+> This setup assumes you're using [Yarn](https://yarnpkg.com/) as your package manager. Feel free to use npm or pnpm instead.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Clone the repository
+2. Run `yarn install` to install dependencies
+3. Set the DATABASE_URL environment variable to a MongoDB database
+4. Run `yarn dev` to start the development server
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## The Tic-Tac-Toe algorithm
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The board is always represented as a string of the format `"........."` (9 characters) where `.` can be `X`, `O` or `_`. The board is then rendered from top-left to bottom-right, with 3 characters for each row.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+The algorithm uses regexes to validate the board, check for endgame positions and find the next move. However, since it's hard to detect row boundaries with regexes, commas are inserted every 3 characters to make it easier to detect these boundaries.
 
-## Learn More
+The algorithm isn't perfect to allow for some wins by the human player, namely it lacks a check for diagonal wins or forcing wins for the AI (it just plays defensively, blocking most of the human player's wins).
 
-To learn more about Next.js, take a look at the following resources:
+## Testing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Run `yarn test` to run the tests.
