@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
       return new Response(
         JSON.stringify({ nextBoard: board, result: resultPre }),
-        { status: 200 }
+        { status: 201 }
       );
     }
 
