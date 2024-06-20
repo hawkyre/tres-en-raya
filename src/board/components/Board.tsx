@@ -9,10 +9,17 @@ import { BoardState } from './BoardState';
 import Link from 'next/link';
 import { Button } from '@/common/components/Button';
 import { StyledLink } from '@/common/components/StyledLink';
+import { BoardWinningLine } from './BoardWinningLine';
 
 export const Board: React.FC = () => {
-  const { boardState, onMove, restartGame, gameState, whoseTurn } =
-    useBoardContext();
+  const {
+    boardState,
+    onMove,
+    restartGame,
+    gameState,
+    whoseTurn,
+    winningLines,
+  } = useBoardContext();
 
   return (
     <div className='grow flex md:flex-row flex-col gap-8 items-center justify-between h-full'>
@@ -20,7 +27,7 @@ export const Board: React.FC = () => {
         <p className='self-start text-sm sm:text-lg text-red-500 font-bold'>
           AI (O)
         </p>
-        <div className='h-[calc(min(100vw-4rem,50vh))] sm:h-[calc(min(100vw-4rem,70vh))] md:h-[calc(min(60vw,60vh))] xl:h-[calc(min(80vw,80vh))] aspect-square grid grid-cols-3 grid-rows-3 rounded-lg overflow-hidden'>
+        <div className='h-[calc(min(100vw-4rem,50vh))] sm:h-[calc(min(100vw-4rem,70vh))] md:h-[calc(min(60vw,60vh))] xl:h-[calc(min(80vw,80vh))] aspect-square grid grid-cols-3 grid-rows-3 rounded-lg overflow-hidden relative'>
           {Array(9)
             .fill(0)
             .map((_, index) => (
@@ -40,6 +47,9 @@ export const Board: React.FC = () => {
                 <BoardShape shape={boardState[index]} />
               </button>
             ))}
+          {winningLines.map((line, i) => (
+            <BoardWinningLine {...line} key={i} />
+          ))}
         </div>
         <p className='self-end text-sm sm:text-lg font-bold'>(X) You</p>
       </div>

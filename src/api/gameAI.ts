@@ -145,4 +145,9 @@ const generateNewBoard = (board: string, indexToPlay: number) => {
   return newBoard.replaceAll(',', '');
 };
 
-export { validateBoard, getBoardResult, getNextBoardMove };
+export {
+  validateBoard,
+  getBoardResult,
+  getNextBoardMove,
+  addSeparatorsToBoard,
+};

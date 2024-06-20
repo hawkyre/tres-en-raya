@@ -3,6 +3,13 @@
 import { getBoardResult } from '@/api/gameAI';
 import { revalidatePath } from 'next/cache';
 import React, { createContext, useContext, useMemo, useState } from 'react';
+import { getLinePositionsForWin } from '../utils/getLinePositionsForWin';
+
+export interface WinningLine {
+  fromIndex: number;
+  toIndex: number;
+  winner: string;
+}
 
 // Define the shape of the context's state
 interface BoardContextState {
@@ -11,6 +18,7 @@ interface BoardContextState {
   gameState: string;
   restartGame: () => void;
   whoseTurn: 'player' | 'ai';
+  winningLines: WinningLine[];
 }
 
 // Create the context with a default value
@@ -20,6 +28,7 @@ const BoardContext = createContext<BoardContextState>({
   gameState: 'playing',
   restartGame: () => {},
   whoseTurn: 'player',
+  winningLines: [],
 });
 
 // Create a provider component
@@ -32,6 +41,7 @@ export const BoardContextProvider: React.FC<BoardContextProviderProps> = ({
 }) => {
   const [board, setBoard] = useState('_________');
   const [gameState, setGameState] = useState('playing');
+  const [winningLines, setWinningLines] = useState<WinningLine[]>([]);
 
   const onMove = (index: number) => {
     const newBoard =
@@ -49,6 +59,16 @@ export const BoardContextProvider: React.FC<BoardContextProviderProps> = ({
     // Just for faster display of results, still need to call server for DB store
     if (gameRes !== 'playing') {
       setGameState(gameRes);
+      if (gameRes === 'player1') {
+        const lines = getLinePositionsForWin(newBoard);
+        setWinningLines(
+          lines.map(([fromIndex, toIndex, winner]) => ({
+            fromIndex,
+            toIndex,
+            winner,
+          }))
+        );
+      }
     }
 
     fetch(`/api/ai/move`, {
@@ -59,6 +79,20 @@ export const BoardContextProvider: React.FC<BoardContextProviderProps> = ({
         const { nextBoard, result } = await res.json();
         setGameState(result);
         setBoard(nextBoard);
+
+        console.log(nextBoard, result);
+
+        if (result === 'player2') {
+          const lines = getLinePositionsForWin(nextBoard);
+          console.log(lines);
+          setWinningLines(
+            lines.map(([fromIndex, toIndex, winner]) => ({
+              fromIndex,
+              toIndex,
+              winner,
+            }))
+          );
+        }
       }
     });
   };
@@ -66,6 +100,7 @@ export const BoardContextProvider: React.FC<BoardContextProviderProps> = ({
   const restartGame = () => {
     setBoard('_________');
     setGameState('playing');
+    setWinningLines([]);
   };
 
   const whoseTurn = useMemo(
@@ -84,6 +119,7 @@ export const BoardContextProvider: React.FC<BoardContextProviderProps> = ({
         onMove,
         restartGame,
         whoseTurn,
+        winningLines,
       }}
     >
       {children}
