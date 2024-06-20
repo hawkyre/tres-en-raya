@@ -1,6 +1,7 @@
 'use client';
 
 import { getBoardResult } from '@/api/gameAI';
+import { revalidatePath } from 'next/cache';
 import React, { createContext, useContext, useState } from 'react';
 
 // Define the shape of the context's state
@@ -43,20 +44,20 @@ export const BoardContextProvider: React.FC<BoardContextProviderProps> = ({
 
     let gameRes = getBoardResult(newBoard);
 
+    // Just for faster display of results, still need to call server for DB store
     if (gameRes !== 'playing') {
       setGameState(gameRes);
-    } else {
-      fetch(`/api/ai/move?board=${newBoard}`, {
-        method: 'GET',
-      }).then(async (res) => {
-        console.log(res);
-        if (res.status === 200) {
-          const { nextBoard, result } = await res.json();
-          setGameState(result);
-          setBoard(nextBoard);
-        }
-      });
     }
+
+    fetch(`/api/ai/move?board=${newBoard}`, {
+      method: 'GET',
+    }).then(async (res) => {
+      if (res.status === 200) {
+        const { nextBoard, result } = await res.json();
+        setGameState(result);
+        setBoard(nextBoard);
+      }
+    });
   };
 
   const restartGame = () => {
