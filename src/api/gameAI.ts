@@ -1,6 +1,6 @@
 /**
  *
- * @param board a string of the format "........." representing a "tres en raya"/tic-tac-toe board, where . can be X, O or _
+ * @param board a string of the format "........." (9 characters) representing a "tres en raya"/tic-tac-toe board, where . can be X, O or _
  * @returns true if the board is valid, false otherwise
  */
 
@@ -36,8 +36,8 @@ const addSeparatorsToBoard = (board: string) => {
 
 /**
  *
- * @param board a string of the format "........." representing a "tres en raya"/tic-tac-toe board, where . can be X, O or _
- * @returns 'playing' if the board is not done, 'draw', 'player1' or 'player2' if it is representing the corresponding result
+ * @param board a string of the format "........." (9 characters) representing a "tres en raya"/tic-tac-toe board, where . can be X, O or _
+ * @returns 'playing' if the board is not done, 'draw', 'player1' or 'player2' if the game has reach an ending position representing the corresponding result
  */
 const getBoardResult = (board: string) => {
   // First we add the commas to make it easier to work with
@@ -60,10 +60,10 @@ const getBoardResult = (board: string) => {
 
 /**
  *
- * @param board a string of the format "...,...,..." representing a "tres en raya"/tic-tac-toe board, where . can be X, O or _
- * @returns a new board with the next move, without the commas, ready to be sent to the client
+ * @param board a string of the format "........." (9 characters) representing a "tres en raya"/tic-tac-toe board, where . can be X, O or _
+ * @returns a new board with the next move (O) by the AI
  *
- * Caveats:
+ * Things to keep in mind:
  * - The board is assumed to be validated beforehand
  */
 const getNextBoardMove = (board: string) => {
