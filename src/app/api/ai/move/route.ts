@@ -1,6 +1,5 @@
 import { validateBoard, getBoardResult, getNextBoardMove } from '@/api/gameAI';
 import { createScore } from '@/api/scores';
-import prisma from '@/prisma/prisma';
 import { NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {

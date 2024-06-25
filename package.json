@@ -12,6 +12,7 @@
   "dependencies": {
     "@prisma/client": "^5.15.1",
     "@types/jest": "^29.5.12",
+    "mongoose": "^8.4.3",
     "next": "14.2.4",
     "next-test-api-route-handler": "^4.0.8",
     "react": "^18",

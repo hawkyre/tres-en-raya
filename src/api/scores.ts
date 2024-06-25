@@ -1,20 +1,17 @@
-import prisma from '@/prisma/prisma';
+import { connect } from '../../mongo/mongodb';
 
 export const getScores = async () => {
-  const scores = await prisma.scores.groupBy({
-    by: ['winner'],
-    _count: {
-      winner: true,
-    },
-  });
+  const client = await connect();
 
-  const scoreMap = scores.reduce(
-    (acc, { winner, _count: { winner: scoreCount } }) => {
-      acc[winner] = scoreCount;
-      return acc;
-    },
-    {} as Record<string, number>
-  );
+  const scores = await client.Scores.find({});
+  const scoreMap = scores.reduce((acc, { winner }) => {
+    acc[winner] = acc[winner] ? acc[winner] + 1 : 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  scoreMap['player1'] ??= 0;
+  scoreMap['player2'] ??= 0;
+  scoreMap['draw'] ??= 0;
 
   return scoreMap;
 };
@@ -23,7 +20,7 @@ export const createScore = async (score: {
   winner: string;
   final_board: string;
 }) => {
-  await prisma.scores.create({
-    data: score,
-  });
+  const client = await connect();
+
+  await client.Scores.create(score);
 };

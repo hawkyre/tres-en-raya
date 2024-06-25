@@ -8,9 +8,8 @@ A simple tic-tac-toe game built with Next.js, Typescript, TailwindCSS, MongoDB a
 
 1. Clone the repository
 2. Run `yarn install` to install dependencies
-3. Set the DATABASE_URL environment variable to a MongoDB database [*with a replica set deployment for transaction support*](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/mongodb-typescript-mongodb)
-4. Execute `npx prisma db push` to initialize the database 
-5. Run `yarn dev` to start the development server
+3. Set the DATABASE_URL environment variable to a MongoDB database
+4. Run `yarn dev` to start the development server
 
 ## The Tic-Tac-Toe algorithm
 
